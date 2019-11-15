@@ -1,29 +1,29 @@
-var musicRepository = (function() {
+var albumRepository = (function() {
   var repository = [];
   var apiUrl =
     "http://ws.audioscrobbler.com/2.0/?method=tag.gettopalbums&tag=disco&api_key=d72e416c1c113e2d767301436f61b6a2&format=json";
 
-  function add(music) {
-    if (typeof music === "object" && "name" in music && "detailsUrl" in music) {
-      repository.push(music);
+  function add(album) {
+    if (typeof album === "object" && "name" in album && "detailsUrl" in album) {
+      repository.push(album);
     } else {
       console.log("add an object");
     }
   }
 
-  function addListItem(music) {
-    var musicList = $(".music-list");
+  function addListItem(album) {
+    var albumList = $(".album-list");
     var $listItem = $("<li>");
-    var $button = $('<button class="my-class">' + music.name + "</button>");
-    $(button).text(music.name);
+    var $button = $('<button class="my-class">' + album.name + "</button>");
+    $(button).text(album.name);
     $(listitem).append(button);
     button.on("click", function() {
-      showDetails(music);
+      showDetails(album);
     });
   }
 
   function showDetails(item) {
-    musicRepository.loadDetails(item).then(function() {
+    albumRepository.loadDetails(item).then(function() {
       showModal(item);
     });
   }
@@ -39,11 +39,11 @@ var musicRepository = (function() {
     return $.ajax(apiUrl, { dataType: "json" })
       .then(function(item) {
         $.each(item.results, function(index, item) {
-          var music = {
+          var album = {
             name: item.name,
             detailsUrl: item.url
           };
-          add(music);
+          add(album);
         });
       })
       .catch(function(error) {
@@ -56,7 +56,7 @@ var musicRepository = (function() {
     return $.ajax(url)
       .then(function(details) {
         item.imageUrl = details.sprites.front_default;
-        item.name = details.height;
+        item.name = details.name;
         item.artist = details.artist;
       })
       .catch(function(e) {
@@ -106,9 +106,9 @@ var musicRepository = (function() {
 })();
 
 // forEach Used To cycle through addListItem function properties
-musicRepository.loadList().then(function() {
+albumRepository.loadList().then(function() {
   // Now the data is loaded
-  musicRepository.getAll().forEach(function(music) {
-    musicRepository.addListItem(music);
+  albumRepository.getAll().forEach(function(album) {
+    albumRepository.addListItem(album);
   });
 });
