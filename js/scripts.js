@@ -3,8 +3,18 @@ var musicRepository = (function() {
   var apiUrl =
     "http://ws.audioscrobbler.com/2.0/?method=tag.gettopalbums&tag=disco&api_key=d72e416c1c113e2d767301436f61b6a2&format=json";
 
+  function add(music) {
+    if (typeof music === "object" && "name" in music && "detailsUrl" in music) {
+      repository.push(music);
+    } else {
+      console.log("add an object");
+    }
+  }
+
   function addListItem(music) {
     var musicList = $(".music-list");
+    var $listItem = $("<li>");
+    var $button = $('<button class="my-class">' + music.name + "</button>");
     $(button).text(music.name);
     $(listitem).append(button);
     button.on("click", function() {
@@ -65,7 +75,8 @@ var musicRepository = (function() {
     getAll: getAll,
     addListItem: addListItem,
     loadList: loadList,
-    loadDetails: loadDetails
+    loadDetails: loadDetails,
+    showModal: showModal
   };
 })();
 
