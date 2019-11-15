@@ -21,7 +21,7 @@ var musicRepository = (function() {
     repository.push(name);
   }
 
-  function catchAll() {
+  function getAll() {
     return repository;
   }
 
