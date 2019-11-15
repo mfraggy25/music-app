@@ -65,10 +65,34 @@ var musicRepository = (function() {
   }
 
   function showModal(item) {
+    var $modalContainer = $("#modal-container");
+    $modalContainer.empty();
+    var modal = $('<div class="modal"></div>');
+    var closeButtonElement = $('<button class="modal-close">Close</button>');
     $("#Name").text(item.name);
     $("#Img").attr("png", item.imageUrl);
     $("#Artist").text(item.artist);
   }
+
+  function hideModal() {
+    var $modalContainer = $("#modal-container");
+    $modalContainer.removeClass("is-visible");
+  }
+
+  jQuery(window).on("keydown", e => {
+    var $modalContainer = $("#modal-container");
+    if (e.key === "Escape" && $modalContainer.hasClass("is-visible")) {
+      hideModal();
+    }
+  });
+
+  var $modalContainer = document.querySelector("#modal-container");
+  $modalContainer.addEventListener("click", e => {
+    var target = e.target;
+    if (target === $modalContainer) {
+      hideModal();
+    }
+  });
 
   return {
     add: add,
@@ -76,7 +100,8 @@ var musicRepository = (function() {
     addListItem: addListItem,
     loadList: loadList,
     loadDetails: loadDetails,
-    showModal: showModal
+    showModal: showModal,
+    hideModal: hideModal
   };
 })();
 
